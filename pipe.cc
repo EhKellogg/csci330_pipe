@@ -22,14 +22,12 @@ while(endprg == false)
 	{
 		std::cout << "Command 2: ";
 		getline(std::cin, command2);
-	//	if(command == "END")
-	//		std::cout << command << std::endl;
 		command.c_str();
 
 		char cpy_arr[256];
 		strcpy(cpy_arr,command.c_str());
 			
-		char *args[255]; // = {"ls","-l", NULL}; 
+		char *args[255];  
 		char *token = strtok(cpy_arr, " ");
 		int i = 0;
 		while(token != NULL)
@@ -43,7 +41,7 @@ while(endprg == false)
 		char cpy_arr2[256];
 		strcpy(cpy_arr2,command2.c_str());
 			
-		char *args2[255]; // = {"ls","-l", NULL}; 
+		char *args2[255];  
 		char *token2 = strtok(cpy_arr2, " ");
 		int j = 0;
 		while(token2 != NULL)
@@ -62,42 +60,54 @@ while(endprg == false)
 			perror("pipe");
 			exit(1);
 		}
+		
+
+//while(endprg == false)
+//{		
 		pid_t pid = fork();
+		pid_t pid2 = fork();
 		char *buffer[256];
-		if(pid == -1)
+		if(pid == -1 || pid2 == -1)
 		{
 			perror("fork");
 			exit(1);
 		}
-		else if(pid == 0) //child
+		else if(pid > 0 && pid2 > 0) //parent
 		{
+			wait(NULL);
+			wait(NULL);
 			
+		}
+		else if(pid == 0 && pid2 > 0) //1st child
+		{	
+			sleep(2);
+			std::cout << "child 1" << std::endl;
 			close(pipefd[1]);
 			close(0);
 			dup(pipefd[0]);
-
 			close(pipefd[0]);
-			
 			execvp(args2[0], args2);
-
-			//	close(pipefd[0]);
-			//	close(1);
-			//	dup(pipefd[1]);
-//
-//				close(pipefd[1]);
-//				execvp(args[0], args);
-//				wait(nullptr);
-		//	execlp("wc","wc", nullptr);
 		}
-		else 	//parent
-		{
+		else if(pid > 0 && pid2 ==0) //2nd child
+		{	
+			std::cout << "2nd child" << std::endl;
+			sleep(1);
 			close(pipefd[0]);
 			close(1);
 			dup(pipefd[1]);
-
 			close(pipefd[1]);
 			execvp(args[0], args);
-			wait(nullptr);
+		//	wait(nullptr);
+		}
+		else 	//parent
+		{
+			std::cout << "grandchild" << std::endl;
+		//	close(pipefd[0]);
+		//	close(1);
+		//	dup(pipefd[1]);
+		//	close(pipefd[1]);
+		//	execvp(args[0], args);
+		//	wait(nullptr);
 		}
 	}
 
