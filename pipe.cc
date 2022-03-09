@@ -22,8 +22,6 @@ while(endprg == false)
 	{
 		std::cout << "Command 2: ";
 		getline(std::cin, command2);
-	//	if(command == "END")
-	//		std::cout << command << std::endl;
 		command.c_str();
 
 		char cpy_arr[256];
@@ -75,26 +73,14 @@ while(endprg == false)
 			close(pipefd[1]);
 			close(0);
 			dup(pipefd[0]);
-
 			close(pipefd[0]);
-			
 			execvp(args2[0], args2);
-
-			//	close(pipefd[0]);
-			//	close(1);
-			//	dup(pipefd[1]);
-//
-//				close(pipefd[1]);
-//				execvp(args[0], args);
-//				wait(nullptr);
-		//	execlp("wc","wc", nullptr);
 		}
 		else 	//parent
 		{
 			close(pipefd[0]);
 			close(1);
 			dup(pipefd[1]);
-
 			close(pipefd[1]);
 			execvp(args[0], args);
 			wait(nullptr);
