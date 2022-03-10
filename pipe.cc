@@ -33,8 +33,14 @@ while(endprg == false)
 		endprg = true;
 	else
 	{
+<<<<<<< HEAD
 		std::cout << "Command 2: "; // pulls the entered commands for the first run
 		getline(std::cin, command2); 
+=======
+		std::cout << "Command 2: ";
+		getline(std::cin, command2);
+		command.c_str();
+>>>>>>> e3ede45fbe7ba9f52cba8d69ab7fa97845653e50
 
 		char cpy_arr[256];
 		strcpy(cpy_arr,command.c_str()); //converts the command to a usable string for strtok
